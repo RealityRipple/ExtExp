@@ -1,0 +1,54 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+ <Description about="urn:mozilla:install-manifest">
+  <em:name>ExtExp</em:name>
+  <em:id>{4CAFE6F1-50EA-44FE-8E50-31C6B21E8032}</em:id>
+  <em:version>0.1</em:version>
+  <em:type>2</em:type>
+  <!-- Firefox -->
+  <em:targetApplication>
+   <Description>
+    <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+    <em:minVersion>2.0</em:minVersion>
+    <em:maxVersion>50.*</em:maxVersion>
+   </Description>
+  </em:targetApplication>
+  <!-- SeaMonkey -->
+  <em:targetApplication>
+   <Description>
+    <em:id>{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}</em:id>
+    <em:minVersion>2.0a1</em:minVersion>
+    <em:maxVersion>2.40</em:maxVersion>
+   </Description>
+  </em:targetApplication>
+  <!-- Thunderbird -->
+  <em:targetApplication>
+   <Description>
+    <em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id>
+    <em:minVersion>2.0</em:minVersion>
+    <em:maxVersion>50.*</em:maxVersion>
+   </Description>
+  </em:targetApplication>
+  <!-- Sunbird -->
+  <em:targetApplication>
+   <Description>
+    <em:id>{718e30fb-e89b-41dd-9da7-e25a45638b28}</em:id>
+    <em:minVersion>0.3</em:minVersion>
+    <em:maxVersion>5.0b2pre</em:maxVersion>
+   </Description>
+  </em:targetApplication>
+  <!-- Pale Moon -->
+  <em:targetApplication>
+   <Description>
+    <em:id>{8de7fcbb-c55c-4fbe-bfc5-fc555c87dbc4}</em:id>
+    <em:minVersion>25.0a1pre</em:minVersion>
+    <em:maxVersion>27.*</em:maxVersion>
+   </Description>
+  </em:targetApplication>
+  <em:description>Export your extensions!</em:description>
+  <em:homepageURL>https://realityripple.com/Software/Mozilla-Extensions/ExtExp/</em:homepageURL>
+  <em:updateURL>https://realityripple.com/Software/Mozilla-Extensions/ExtExp/update.rdf</em:updateURL>
+  <em:iconURL>chrome://extexp/skin/logo.png</em:iconURL>
+  <em:creator>RealityRipple</em:creator>
+ </Description>
+</RDF>

@@ -1,0 +1,5 @@
+content		extexp		chrome/content/
+overlay		chrome://mozapps/content/extensions/extensions.xul		chrome://extexp/content/extensions.xul
+overlay		about:addons							chrome://extexp/content/extensions.xul
+skin		extexp				skin				chrome/skin/
+locale		extexp				en-US				chrome/locale/en-US/

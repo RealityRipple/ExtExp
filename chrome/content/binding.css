@@ -1,0 +1,8 @@
+extExpExportButton
+{
+ -moz-binding: url("chrome://extexp/content/binding.xml#export-button");
+}
+extExpLegacyExportButton
+{
+ -moz-binding: url("chrome://extexp/content/binding.xml#legacy-export-button");
+}

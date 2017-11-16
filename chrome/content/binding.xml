@@ -1,0 +1,164 @@
+<!DOCTYPE bindings SYSTEM "chrome://extexp/locale/overlay.dtd">
+<bindings id="extExpBindings"
+          xmlns="http://www.mozilla.org/xbl"
+          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+          xmlns:xbl="http://www.mozilla.org/xbl"
+          xmlns:html="http://www.w3.org/1999/xhtml">
+ <binding id="export-button">
+  <content>
+   <xul:button anonid="export-btn"
+               class="addon-control export"
+               label="&export.label;"
+               tooltiptext="&export.tooltiptext;"
+               oncommand="document.getBindingParent(this).export();" />
+  </content>
+  <implementation>
+   <field name="_exportBtn">
+    document.getAnonymousElementByAttribute(this, "anonid", "export-btn");
+   </field>
+   <method name="export">
+    <body><![CDATA[
+ function getExt(extID)
+ {
+  var profPath = Components.classes["@mozilla.org/file/directory_service;1"].getService( Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile).path;
+  var extFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+  extFile.initWithPath(profPath);
+  extFile.appendRelativePath("extensions");
+  extFile.appendRelativePath(extID + ".xpi");
+  if (extFile.exists())
+   return extFile.path;
+
+  var extDir = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+  extDir.initWithPath(profPath);
+  extDir.appendRelativePath("extensions");
+  extDir.appendRelativePath(extID);
+  if (extDir.exists() && extDir.isDirectory())
+   return extDir.path;
+  
+  return false;
+ }
+ function getSave(extName, extID, sTitle)
+ {
+  var nsIFilePicker = Components.interfaces.nsIFilePicker;
+  var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+  fp.init(window, sTitle.replace("%1", extName), nsIFilePicker.modeSave);
+  fp.appendFilter("Cross Platform Installer", "*.xpi");
+  fp.defaultString = extName.replace(new RegExp(" ", "g"), "-");
+  fp.defaultExtension = "xpi";
+  if (fp.show() === 1)
+   return false;
+  return fp.file.path;
+ }
+ function addFolderContentsToZip(zipW, folder, root)
+ {
+  var entries = folder.directoryEntries;  
+  while(entries.hasMoreElements())  
+  {  
+   var entry = entries.getNext();  
+   entry.QueryInterface(Components.interfaces.nsIFile);  
+   zipW.addEntryFile(root + entry.leafName, 9, entry, false);
+   if (entry.isDirectory())
+    addFolderContentsToZip(zipW, entry, root + entry.leafName + "/");
+  } 
+ }
+ function saveExt(fromPath, toPath)
+ {
+  var fFrom = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+  fFrom.initWithPath(fromPath);
+  if (!fFrom.exists())
+   return false;
+  if (fFrom.isDirectory())
+  {
+   var fTo = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+   fTo.initWithPath(toPath);
+   if (fTo.exists())
+    fTo.remove();
+   var zipWriter = Components.classes["@mozilla.org/zipwriter;1"].createInstance(Components.interfaces.nsIZipWriter);
+   zipWriter.open(fTo, 42);
+   addFolderContentsToZip(zipWriter, fFrom, "");
+   zipWriter.close();
+   return true;
+  }
+  else
+  {
+   var fTo = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+   fTo.initWithPath(toPath);
+   var fToDir  = fTo.parent;
+   var fToName = fTo.leafName;
+   if (fTo.exists())
+    fTo.remove();
+   fFrom.copyTo(fToDir, fToName);
+   return true;
+  }
+ }
+ 
+ var gBundle = Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService);
+ var locale = gBundle.createBundle("chrome://extexp/locale/extexp.properties");
+ var lclSave_Title = locale.GetStringFromName("save.title");
+ var lclAlert_BadID = locale.GetStringFromName("alert.badid");
+ var lclAlert_NoDefault = locale.GetStringFromName("alert.nodefault");
+ var lclAlert_NoLocation = locale.GetStringFromName("alert.nolocation");
+ var lclAlert_Failure = locale.GetStringFromName("alert.failure");
+ var lclAlert_Success = locale.GetStringFromName("alert.success");
+ 
+ var extName = "Unknown";
+ var extID   = "{00000000-0000-0000-0000-000000000000}";
+ if (this.parentNode.getAttribute("id") === "detail-controls")
+ {
+  extName = document.getElementById("detail-name").innerHTML;
+  var listBox = document.getElementById("addon-list");
+  for (var i = 0; i < listBox.itemCount; i++)
+  {
+   var child = document.getElementById("addon-list").getItemAtIndex(i);
+   if (child.getAttribute("name") === extName)
+   {
+    extID = child.value;
+    break;
+   }
+  }
+ }
+ else
+ {
+  extName = this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("name");
+  extID   = this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.value;
+ }
+ if (extID === "{00000000-0000-0000-0000-000000000000}")
+ {
+  alert(lclAlert_BadID);
+  return;
+ }
+ if (extID === "{972ce4c6-7e08-4474-a285-3208198ce6fd}")
+ {
+  alert(lclAlert_NoDefault);
+  return;
+ }
+ var extPath = getExt(extID);
+ if (extPath === false)
+ {
+  alert(lclAlert_NoLocation.replace("%1", extName) + "\n\n" + extID);
+  return;
+ }
+ else
+ {
+  var savePath = getSave(extName, extID, lclSave_Title);
+  if (savePath !== false)
+  {
+   if (saveExt(extPath, savePath))
+    alert(extName + " has been exported to " + savePath + "!");
+   else
+    alert(lclAlert_Failure.replace("%1", extName).replace("%2", savePath));
+  }
+ }
+    ]]></body>
+   </method>
+  </implementation>
+ </binding>
+ <binding id="legacy-export-button">
+  <content>
+   <xul:button class="uninstallHide exportButton"
+               label="&export.label;" accesskey="&export.accesskey;"
+               tooltiptext="&export.tooltiptext;"
+               command="cmd_export"/>
+  </content>
+ </binding>
+</bindings>
