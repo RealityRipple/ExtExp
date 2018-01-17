@@ -2,8 +2,8 @@
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
  <Description about="urn:mozilla:install-manifest">
   <em:name>ExtExp</em:name>
-  <em:id>{4CAFE6F1-50EA-44FE-8E50-31C6B21E8032}</em:id>
-  <em:version>0.1</em:version>
+  <em:id>{A1B40EBE-CFA1-5353-8C69-9B76E30B8788}</em:id>
+  <em:version>1.0</em:version>
   <em:type>2</em:type>
   <!-- Firefox -->
   <em:targetApplication>
