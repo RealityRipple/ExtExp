@@ -86,6 +86,7 @@ com.RealityRipple.ExtExp = function()
       }
      }
     }
+    document.getElementById("addon-list").addEventListener('select', com.RealityRipple.ExtExp.newButton, false);
    }
    else if (document.getElementById("view-port").selectedPanel.id == "detail-view")
    {
@@ -115,6 +116,44 @@ com.RealityRipple.ExtExp = function()
      if (existings.length)
      {
       existings[0].style.display = "none";
+     }
+    }
+   }
+  }
+  stuffer();
+ }
+
+ pub.newButton = function()
+ {
+  var stuffer = function()
+  {
+   if (document.getElementById("view-port").selectedPanel.id == "list-view")
+   {
+    for (var i = 0; i < document.getElementById("addon-list").itemCount; i++)
+    {
+     var item = document.getElementById("addon-list").getItemAtIndex(i);
+     var controlContainer = document.getAnonymousElementByAttribute(item, 'anonid', 'control-container');
+     var existings = controlContainer.getElementsByTagName("extExpExportButton");
+     if (item.getAttribute("type") === "extension" || (item.getAttribute("type") === "theme" && item.value !== "{972ce4c6-7e08-4474-a285-3208198ce6fd}"))
+     {
+      var cb;
+      if (existings.length)
+      {
+       cb = existings[0];
+      }
+      else
+      {
+       cb = priv.createButton();
+       controlContainer.insertBefore(cb, controlContainer.getElementsByClassName("remove")[0]);
+      }
+      cb.style.display = "-moz-box";
+     }
+     else
+     {
+      if (existings.length)
+      {
+       existings[0].style.display = "none";
+      }
      }
     }
    }
