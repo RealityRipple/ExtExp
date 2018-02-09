@@ -87,7 +87,7 @@
    var fTo = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
    fTo.initWithPath(toPath);
    if (fTo.exists())
-    fTo.remove();
+    fTo.remove(false);
    var zipWriter = Components.classes["@mozilla.org/zipwriter;1"].createInstance(Components.interfaces.nsIZipWriter);
    zipWriter.open(fTo, 42);
    addFolderContentsToZip(zipWriter, fFrom, "");
@@ -101,7 +101,7 @@
    var fToDir  = fTo.parent;
    var fToName = fTo.leafName;
    if (fTo.exists())
-    fTo.remove();
+    fTo.remove(false);
    fFrom.copyTo(fToDir, fToName);
    return true;
   }
@@ -251,7 +251,7 @@
    var fTo = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
    fTo.initWithPath(toPath);
    if (fTo.exists())
-    fTo.remove();
+    fTo.remove(false);
    var zipWriter = Components.classes["@mozilla.org/zipwriter;1"].createInstance(Components.interfaces.nsIZipWriter);
    zipWriter.open(fTo, 42);
    addFolderContentsToZip(zipWriter, fFrom, "");
@@ -265,7 +265,7 @@
    var fToDir  = fTo.parent;
    var fToName = fTo.leafName;
    if (fTo.exists())
-    fTo.remove();
+    fTo.remove(false);
    fFrom.copyTo(fToDir, fToName);
    return true;
   }
