@@ -3,7 +3,7 @@
  <Description about="urn:mozilla:install-manifest">
   <em:name>ExtExp</em:name>
   <em:id>{A1B40EBE-CFA1-5353-8C69-9B76E30B8788}</em:id>
-  <em:version>1.2</em:version>
+  <em:version>1.3</em:version>
   <em:type>2</em:type>
   <!-- Firefox -->
   <em:targetApplication>
@@ -49,6 +49,7 @@
   <em:homepageURL>https://realityripple.com/Software/Mozilla-Extensions/ExtExp/</em:homepageURL>
   <em:updateURL>https://realityripple.com/Software/Mozilla-Extensions/ExtExp/update.rdf</em:updateURL>
   <em:iconURL>chrome://extexp/skin/logo.png</em:iconURL>
+  <em:icon64URL>chrome://extexp/skin/logo64.png</em:icon64URL>
   <em:creator>RealityRipple</em:creator>
  </Description>
 </RDF>
