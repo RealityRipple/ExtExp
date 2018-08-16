@@ -10,12 +10,12 @@ com.RealityRipple.ExtExp = function()
   if (priv.isLegacyEM())
   {
    priv.showLegacyButton();
-   document.getElementById("extensionsView").addEventListener("select", com.RealityRipple.ExtExp.wait, false);
+   document.getElementById("extensionsView").addEventListener("select", pub.wait, false);
   }
   else
   {
-   document.addEventListener("ViewChanged", com.RealityRipple.ExtExp.showButton, true);
-   com.RealityRipple.ExtExp.showButton();
+   document.addEventListener("ViewChanged", pub.showButton, true);
+   pub.showButton();
   }
  }
 
@@ -24,7 +24,7 @@ com.RealityRipple.ExtExp = function()
  pub.wait = function()
  {
   priv.showLegacyButton();
-  priv.timer.initWithCallback(com.RealityRipple.ExtExp.event, 1, Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);
+  priv.timer.initWithCallback(pub.event, 1, Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);
  }
 
  pub.event = 
@@ -86,7 +86,7 @@ com.RealityRipple.ExtExp = function()
       }
      }
     }
-    document.getElementById("addon-list").addEventListener('select', com.RealityRipple.ExtExp.newButton, false);
+    document.getElementById("addon-list").addEventListener('select', pub.newButton, false);
    }
    else if (document.getElementById("view-port").selectedPanel.id == "detail-view")
    {
