@@ -1,113 +1,131 @@
-if (!com) var com = {};
-if (!com.RealityRipple) com.RealityRipple = {};
-com.RealityRipple.ExtExp = function()
+var ExtExp =
 {
- var pub = {};
- var priv = {};
-
- pub.init = function()
+ timer: Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer),
+ init: function()
  {
-  if (priv.isLegacyEM())
+  if (ExtExp.isLegacyEM())
   {
-   priv.showLegacyButton();
-   document.getElementById("extensionsView").addEventListener("select", pub.wait, false);
+   ExtExp.showLegacyButton();
+   document.getElementById("extensionsView").addEventListener("select", ExtExp.wait, false);
   }
   else
   {
-   document.addEventListener("ViewChanged", pub.showButton, true);
-   pub.showButton();
+   document.addEventListener("ViewChanged", ExtExp.showButton, true);
+   ExtExp.showButton();
   }
- }
-
- priv.timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
-
- pub.wait = function()
+ },
+ wait: function()
  {
-  priv.showLegacyButton();
-  priv.timer.initWithCallback(pub.event, 1, Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);
- }
-
- pub.event = 
+  ExtExp.showLegacyButton();
+  ExtExp.timer.initWithCallback(ExtExp.event, 1, Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);
+ },
+ event: 
  {
   notify: function(timer)
   {
-   priv.showLegacyButton();
+   ExtExp.showLegacyButton();
   }
- }
-
- priv.createButton = function()
+ },
+ createButton: function()
  {
   var button = document.createElement("extExpExportButton");
   return button;
- }
-
- priv.createLegacyButton = function()
+ },
+ createLegacyButton: function()
  {
   var button = document.createElement("extExpLegacyExportButton");
   return button;
- }
-
- priv.isLegacyEM  = function()
+ },
+ isLegacyEM: function()
  {
   // Firefox 3.6 and below
   return document.getElementById("extensionsView");
- }
-
- pub.showButton = function()
+ },
+ showButton: function()
  {
-  var stuffer = function()
+  if (document.getElementById("view-port").selectedPanel.id == "list-view")
   {
-   if (document.getElementById("view-port").selectedPanel.id == "list-view")
+   for (var i=0; i < document.getElementById("addon-list").itemCount; i++)
    {
-    for (var i=0; i < document.getElementById("addon-list").itemCount; i++)
-    {
-     var item = document.getElementById("addon-list").getItemAtIndex(i);
-     var controlContainer = document.getAnonymousElementByAttribute(item, 'anonid', 'control-container');
-     var existings = controlContainer.getElementsByTagName("extExpExportButton");
-     if (item.getAttribute("type") === "extension" || (item.getAttribute("type") === "theme" && item.value !== "{972ce4c6-7e08-4474-a285-3208198ce6fd}"))
-     {
-      var cb;
-      if (existings.length)
-      {
-       cb = existings[0];
-      }
-      else
-      {
-       cb = priv.createButton();
-       controlContainer.insertBefore(cb, controlContainer.getElementsByClassName("remove")[0]);
-      }
-      cb.style.display = "-moz-box";
-     }
-     else
-     {
-      if (existings.length)
-      {
-       existings[0].style.display = "none";
-      }
-     }
-    }
-    document.getElementById("addon-list").addEventListener('select', pub.newButton, false);
-   }
-   else if (document.getElementById("view-port").selectedPanel.id == "detail-view")
-   {
-    var detail = document.getElementById("detail-view");
-    var existings = detail.getElementsByTagName("extExpExportButton");
-    if (detail.getAttribute("type") === "extension" || detail.getAttribute("type") === "theme")
+    var item = document.getElementById("addon-list").getItemAtIndex(i);
+    var controlContainer = document.getAnonymousElementByAttribute(item, 'anonid', 'control-container');
+    var existings = controlContainer.getElementsByTagName("extExpExportButton");
+    if (item.getAttribute("type") === "extension" || (item.getAttribute("type") === "theme" && item.value !== "{972ce4c6-7e08-4474-a285-3208198ce6fd}"))
     {
      var cb;
      if (existings.length)
      {
       cb = existings[0];
      }
-     else if (document.getElementById("detail-uninstall-btn"))
+     else
      {
-      cb = priv.createButton();
-      document.getElementById("detail-uninstall-btn").parentNode.insertBefore(cb, document.getElementById("detail-uninstall-btn"));
+      cb = ExtExp.createButton();
+      controlContainer.insertBefore(cb, controlContainer.getElementsByClassName("remove")[0]);
      }
-     else if (document.getElementById("detail-enable-btn"))
+     cb.style.display = "-moz-box";
+    }
+    else
+    {
+     if (existings.length)
      {
-      cb = priv.createButton();
-      document.getElementById("detail-enable-btn").parentNode.insertBefore(cb, document.getElementById("detail-enable-btn"));
+      existings[0].style.display = "none";
+     }
+    }
+   }
+   document.getElementById("addon-list").addEventListener('select', ExtExp.newButton, false);
+  }
+  else if (document.getElementById("view-port").selectedPanel.id == "detail-view")
+  {
+   var detail = document.getElementById("detail-view");
+   var existings = detail.getElementsByTagName("extExpExportButton");
+   if (detail.getAttribute("type") === "extension" || detail.getAttribute("type") === "theme")
+   {
+    var cb;
+    if (existings.length)
+    {
+     cb = existings[0];
+    }
+    else if (document.getElementById("detail-uninstall-btn"))
+    {
+     cb = ExtExp.createButton();
+     document.getElementById("detail-uninstall-btn").parentNode.insertBefore(cb, document.getElementById("detail-uninstall-btn"));
+    }
+    else if (document.getElementById("detail-enable-btn"))
+    {
+     cb = ExtExp.createButton();
+     document.getElementById("detail-enable-btn").parentNode.insertBefore(cb, document.getElementById("detail-enable-btn"));
+    }
+    cb.style.display = "-moz-box";
+   }
+   else
+   {
+    if (existings.length)
+    {
+     existings[0].style.display = "none";
+    }
+   }
+  }
+ },
+ newButton: function()
+ {
+  if (document.getElementById("view-port").selectedPanel.id == "list-view")
+  {
+   for (var i = 0; i < document.getElementById("addon-list").itemCount; i++)
+   {
+    var item = document.getElementById("addon-list").getItemAtIndex(i);
+    var controlContainer = document.getAnonymousElementByAttribute(item, 'anonid', 'control-container');
+    var existings = controlContainer.getElementsByTagName("extExpExportButton");
+    if (item.getAttribute("type") === "extension" || (item.getAttribute("type") === "theme" && item.value !== "{972ce4c6-7e08-4474-a285-3208198ce6fd}"))
+    {
+     var cb;
+     if (existings.length)
+     {
+      cb = existings[0];
+     }
+     else
+     {
+      cb = ExtExp.createButton();
+      controlContainer.insertBefore(cb, controlContainer.getElementsByClassName("remove")[0]);
      }
      cb.style.display = "-moz-box";
     }
@@ -120,57 +138,17 @@ com.RealityRipple.ExtExp = function()
     }
    }
   }
-  stuffer();
- }
-
- pub.newButton = function()
- {
-  var stuffer = function()
-  {
-   if (document.getElementById("view-port").selectedPanel.id == "list-view")
-   {
-    for (var i = 0; i < document.getElementById("addon-list").itemCount; i++)
-    {
-     var item = document.getElementById("addon-list").getItemAtIndex(i);
-     var controlContainer = document.getAnonymousElementByAttribute(item, 'anonid', 'control-container');
-     var existings = controlContainer.getElementsByTagName("extExpExportButton");
-     if (item.getAttribute("type") === "extension" || (item.getAttribute("type") === "theme" && item.value !== "{972ce4c6-7e08-4474-a285-3208198ce6fd}"))
-     {
-      var cb;
-      if (existings.length)
-      {
-       cb = existings[0];
-      }
-      else
-      {
-       cb = priv.createButton();
-       controlContainer.insertBefore(cb, controlContainer.getElementsByClassName("remove")[0]);
-      }
-      cb.style.display = "-moz-box";
-     }
-     else
-     {
-      if (existings.length)
-      {
-       existings[0].style.display = "none";
-      }
-     }
-    }
-   }
-  }
-  stuffer();
- }
-
- priv.showLegacyButton = function()
+ },
+ showLegacyButton: function()
  {
   if(document.getElementById("exportButtonOn"))
   {
-   priv.timer.cancel();
+   ExtExp.timer.cancel();
    return;
   }
-  if (priv.exportButton && priv.exportButton.parentNode)
+  if (ExtExp.exportButton && ExtExp.exportButton.parentNode)
   {
-   priv.exportButton.parentNode.removeChild(priv.exportButton);
+   ExtExp.exportButton.parentNode.removeChild(ExtExp.exportButton);
   }
   var elemExtension = document.getElementById("extensionsView").selectedItem;
   if (!elemExtension)
@@ -178,21 +156,18 @@ com.RealityRipple.ExtExp = function()
   var elemSelectedButtons = document.getAnonymousElementByAttribute(elemExtension, "anonid", "selectedButtons");
   if (!elemSelectedButtons)
    return;
-  if (!priv.exportButton)
-   priv.exportButton = priv.createLegacyButton();
+  if (!ExtExp.exportButton)
+   ExtExp.exportButton = ExtExp.createLegacyButton();
   for (var i=0; i<elemSelectedButtons.childNodes.length; i++)
   {
    if (elemSelectedButtons.childNodes[i] && elemSelectedButtons.childNodes[i].nodeType == Node.ELEMENT_NODE
        && elemSelectedButtons.childNodes[i].getAttribute("class").match(/optionsButton/))
    {
-    priv.exportButton.id="exportButtonOn";
-    elemSelectedButtons.insertBefore(priv.exportButton, elemSelectedButtons.childNodes[i]);
+    ExtExp.exportButton.id="exportButtonOn";
+    elemSelectedButtons.insertBefore(ExtExp.exportButton, elemSelectedButtons.childNodes[i]);
     break;
    }
   }
  }
-
- return pub;
-}();
-
-addEventListener("load", com.RealityRipple.ExtExp.init, false);
+};
+addEventListener("load", ExtExp.init, false);
