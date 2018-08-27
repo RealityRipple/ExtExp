@@ -1,11 +1,11 @@
 var ExtExp =
 {
- timer: Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer),
+ _timer: Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer),
  init: function()
  {
-  if (ExtExp.isLegacyEM())
+  if (ExtExp._isLegacyEM())
   {
-   ExtExp.showLegacyButton();
+   ExtExp._showLegacyButton();
    document.getElementById("extensionsView").addEventListener("select", ExtExp.wait, false);
   }
   else
@@ -16,14 +16,14 @@ var ExtExp =
  },
  wait: function()
  {
-  ExtExp.showLegacyButton();
-  ExtExp.timer.initWithCallback(ExtExp.event, 1, Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);
+  ExtExp._showLegacyButton();
+  ExtExp._timer.initWithCallback(ExtExp.event, 1, Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);
  },
  event: 
  {
-  notify: function(timer)
+  notify: function(_timer)
   {
-   ExtExp.showLegacyButton();
+   ExtExp._showLegacyButton();
   }
  },
  createButton: function()
@@ -31,12 +31,12 @@ var ExtExp =
   var button = document.createElement("extExpExportButton");
   return button;
  },
- createLegacyButton: function()
+ _createLegacyButton: function()
  {
   var button = document.createElement("extExpLegacyExportButton");
   return button;
  },
- isLegacyEM: function()
+ _isLegacyEM: function()
  {
   // Firefox 3.6 and below
   return document.getElementById("extensionsView");
@@ -139,11 +139,11 @@ var ExtExp =
    }
   }
  },
- showLegacyButton: function()
+ _showLegacyButton: function()
  {
   if(document.getElementById("exportButtonOn"))
   {
-   ExtExp.timer.cancel();
+   ExtExp._timer.cancel();
    return;
   }
   if (ExtExp.exportButton && ExtExp.exportButton.parentNode)
@@ -157,7 +157,7 @@ var ExtExp =
   if (!elemSelectedButtons)
    return;
   if (!ExtExp.exportButton)
-   ExtExp.exportButton = ExtExp.createLegacyButton();
+   ExtExp.exportButton = ExtExp._createLegacyButton();
   for (var i=0; i<elemSelectedButtons.childNodes.length; i++)
   {
    if (elemSelectedButtons.childNodes[i] && elemSelectedButtons.childNodes[i].nodeType == Node.ELEMENT_NODE
