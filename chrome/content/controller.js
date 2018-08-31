@@ -43,16 +43,17 @@ var ExtExp =
  },
  showButton: function()
  {
+  var existings;
+  var cb;
   if (document.getElementById("view-port").selectedPanel.id == "list-view")
   {
    for (var i=0; i < document.getElementById("addon-list").itemCount; i++)
    {
     var item = document.getElementById("addon-list").getItemAtIndex(i);
     var controlContainer = document.getAnonymousElementByAttribute(item, 'anonid', 'control-container');
-    var existings = controlContainer.getElementsByTagName("extExpExportButton");
+    existings = controlContainer.getElementsByTagName("extExpExportButton");
     if (item.getAttribute("type") === "extension" || (item.getAttribute("type") === "theme" && item.value !== "{972ce4c6-7e08-4474-a285-3208198ce6fd}"))
     {
-     var cb;
      if (existings.length)
      {
       cb = existings[0];
@@ -77,10 +78,9 @@ var ExtExp =
   else if (document.getElementById("view-port").selectedPanel.id == "detail-view")
   {
    var detail = document.getElementById("detail-view");
-   var existings = detail.getElementsByTagName("extExpExportButton");
+   existings = detail.getElementsByTagName("extExpExportButton");
    if (detail.getAttribute("type") === "extension" || detail.getAttribute("type") === "theme")
    {
-    var cb;
     if (existings.length)
     {
      cb = existings[0];
@@ -160,8 +160,7 @@ var ExtExp =
    ExtExp.exportButton = ExtExp._createLegacyButton();
   for (var i=0; i<elemSelectedButtons.childNodes.length; i++)
   {
-   if (elemSelectedButtons.childNodes[i] && elemSelectedButtons.childNodes[i].nodeType == Node.ELEMENT_NODE
-       && elemSelectedButtons.childNodes[i].getAttribute("class").match(/optionsButton/))
+   if (elemSelectedButtons.childNodes[i] && elemSelectedButtons.childNodes[i].nodeType == Node.ELEMENT_NODE && elemSelectedButtons.childNodes[i].getAttribute("class").match(/optionsButton/))
    {
     ExtExp.exportButton.id="exportButtonOn";
     elemSelectedButtons.insertBefore(ExtExp.exportButton, elemSelectedButtons.childNodes[i]);
