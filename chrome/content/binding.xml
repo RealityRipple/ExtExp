@@ -10,13 +10,13 @@
                class="addon-control export"
                label="&export.label;"
                tooltiptext="&export.tooltiptext;"
-               oncommand="document.getBindingParent(this).export();" />
+               oncommand="document.getBindingParent(this).exportXPI();" />
   </content>
   <implementation>
    <field name="_exportBtn">
     document.getAnonymousElementByAttribute(this, "anonid", "export-btn");
    </field>
-   <method name="export">
+   <method name="exportXPI">
     <body><![CDATA[
  function getExt(extID)
  {
