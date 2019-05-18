@@ -52,7 +52,7 @@
 
   return false;
  }
- function getSave(extName, extID, sTitle)
+ function getSave(extName, sTitle)
  {
   var nsIFilePicker = Components.interfaces.nsIFilePicker;
   var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
@@ -155,7 +155,7 @@
  }
  else
  {
-  var savePath = getSave(extName, extID, lclSave_Title);
+  var savePath = getSave(extName, lclSave_Title);
   if (savePath !== false)
   {
    if (saveExt(extPath, savePath))
@@ -216,7 +216,7 @@
 
   return false;
  }
- function getSave(extName, extID, sTitle)
+ function getSave(extName, sTitle)
  {
   var nsIFilePicker = Components.interfaces.nsIFilePicker;
   var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
@@ -305,7 +305,7 @@
  }
  else
  {
-  var savePath = getSave(extName, extID, lclSave_Title);
+  var savePath = getSave(extName, lclSave_Title);
   if (savePath !== false)
   {
    if (saveExt(extPath, savePath))
