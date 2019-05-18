@@ -84,6 +84,8 @@
    return false;
   if (fFrom.isDirectory())
   {
+   if (!("@mozilla.org/zipwriter;1" in Components.classes))
+    return false;
    var fTo = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
    fTo.initWithPath(toPath);
    if (fTo.exists())
@@ -250,6 +252,8 @@
    return false;
   if (fFrom.isDirectory())
   {
+   if (!("@mozilla.org/zipwriter;1" in Components.classes))
+    return false;
    var fTo = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
    fTo.initWithPath(toPath);
    if (fTo.exists())
