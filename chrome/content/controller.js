@@ -287,7 +287,10 @@ var ExtExp =
     var extPath = getExt(extID);
     if (extPath === false)
      continue;
-    var ext = {name: extName, id: extID, path: extPath};
+    var extVer = '0.0';
+    if (child._version !== undefined && child._version.hasAttribute("value"))
+     extVer = child._version.getAttribute("value");
+    var ext = {name: extName, version: extVer, id: extID, path: extPath};
     expList.push(ext);
    }
   }
@@ -302,7 +305,8 @@ var ExtExp =
    var failList = [];
    for (var e = 0; e < expList.length; e++)
    {
-    if (saveExt(expList[e].path, OS.Path.join(savePath, expList[e].name.replace(new RegExp(" ", "g"), "-") + ".xpi")) === false)
+    var saveName = OS.Path.join(savePath, expList[e].name.replace(new RegExp(" ", "g"), "-") + "-v" + expList[e].version + ".xpi");
+    if (saveExt(expList[e].path, saveName) === false)
      failList.push(expList[e].name);
    }
    if (failList.length > 0)

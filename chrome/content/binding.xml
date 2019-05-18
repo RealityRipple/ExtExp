@@ -52,13 +52,13 @@
 
   return false;
  }
- function getSave(extName, sTitle)
+ function getSave(extName, extVer, sTitle)
  {
   var nsIFilePicker = Components.interfaces.nsIFilePicker;
   var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
   fp.init(window, sTitle.replace("%1", extName), nsIFilePicker.modeSave);
   fp.appendFilter("Cross Platform Installer", "*.xpi");
-  fp.defaultString = extName.replace(new RegExp(" ", "g"), "-");
+  fp.defaultString = extName.replace(new RegExp(" ", "g"), "-") + "-v" + extVer;
   fp.defaultExtension = "xpi";
   if (fp.show() === 1)
    return false;
@@ -118,6 +118,7 @@
 
  var extName = "Unknown";
  var extID   = "{00000000-0000-0000-0000-000000000000}";
+ var extVer  = "0.0";
  if (this.parentNode.getAttribute("id") === "detail-controls")
  {
   extName = document.getElementById("detail-name").innerHTML;
@@ -136,6 +137,7 @@
  {
   extName = this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("name");
   extID   = this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.value;
+  extVer  = this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode._version.getAttribute("value");
  }
  if (extID === "{00000000-0000-0000-0000-000000000000}")
  {
@@ -155,7 +157,7 @@
  }
  else
  {
-  var savePath = getSave(extName, lclSave_Title);
+  var savePath = getSave(extName, extVer, lclSave_Title);
   if (savePath !== false)
   {
    if (saveExt(extPath, savePath))
@@ -216,13 +218,13 @@
 
   return false;
  }
- function getSave(extName, sTitle)
+ function getSave(extName, extVer, sTitle)
  {
   var nsIFilePicker = Components.interfaces.nsIFilePicker;
   var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
   fp.init(window, sTitle.replace("%1", extName), nsIFilePicker.modeSave);
   fp.appendFilter("Cross Platform Installer", "*.xpi");
-  fp.defaultString = extName.replace(new RegExp(" ", "g"), "-");
+  fp.defaultString = extName.replace(new RegExp(" ", "g"), "-") + "-v" + extVer;
   fp.defaultExtension = "xpi";
   if (fp.show() === 1)
    return false;
@@ -282,10 +284,12 @@
 
  var extName = "Unknown";
  var extID   = "{00000000-0000-0000-0000-000000000000}";
+ var extVer  = "0.0";
  if (this.parentNode.parentNode.parentNode.parentNode.tagName === "richlistitem")
  {
   extName = this.parentNode.parentNode.parentNode.parentNode.getAttribute("name");
   extID   = this.parentNode.parentNode.parentNode.parentNode.getAttribute("addonID");
+  extVer  = this.parentNode.parentNode.parentNode.parentNode.getAttribute("version");
  }
  if (extID === "{00000000-0000-0000-0000-000000000000}")
  {
@@ -305,7 +309,7 @@
  }
  else
  {
-  var savePath = getSave(extName, lclSave_Title);
+  var savePath = getSave(extName, extVer, lclSave_Title);
   if (savePath !== false)
   {
    if (saveExt(extPath, savePath))
