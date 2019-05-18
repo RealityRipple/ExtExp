@@ -3,5 +3,8 @@
 <?xml-stylesheet href="chrome://extexp/content/binding.css" type="text/css"?>
 <overlay id="extExpOverlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
- <script src="chrome://extexp/content/controller.js" type="application/javascript;version=1.7"/>
+ <script src="chrome://extexp/content/controller.js"/>
+ <menupopup id="utils-menu">
+  <menuitem label="&export.menuitem;" insertafter="utils-installFromFile" oncommand="ExtExp.exportAll();" />
+ </menupopup>
 </overlay>

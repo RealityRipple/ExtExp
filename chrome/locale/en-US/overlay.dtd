@@ -1,3 +1,4 @@
 <!ENTITY export.label "Export">
 <!ENTITY export.accesskey "x">
 <!ENTITY export.tooltiptext "Export this add-on as an XPI file">
+<!ENTITY export.menuitem "Export All Add-ons...">

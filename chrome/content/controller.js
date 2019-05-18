@@ -167,6 +167,157 @@ var ExtExp =
     break;
    }
   }
+ },
+ exportAll: function()
+ {
+  function getExt(extID)
+  {
+   var profPath = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile).path;
+   var extFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+   extFile.initWithPath(profPath);
+   extFile.appendRelativePath("extensions");
+   extFile.appendRelativePath(extID + ".xpi");
+   if (extFile.exists())
+    return extFile.path;
+
+   var extDir = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+   extDir.initWithPath(profPath);
+   extDir.appendRelativePath("extensions");
+   extDir.appendRelativePath(extID);
+   if (extDir.exists() && extDir.isDirectory())
+    return extDir.path;
+
+   var appPath = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("CurProcD", Components.interfaces.nsIFile).path;
+   var appFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+   appFile.initWithPath(appPath);
+   appFile.appendRelativePath("extensions");
+   appFile.appendRelativePath(extID + ".xpi");
+   if (appFile.exists())
+    return appFile.path;
+
+   var appDir = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+   appDir.initWithPath(appPath);
+   appDir.appendRelativePath("extensions");
+   appDir.appendRelativePath(extID);
+   if (appDir.exists() && appDir.isDirectory())
+    return appDir.path;
+
+   return false;
+  }
+  function getSave(extCount, sTitle)
+  {
+   var nsIFilePicker = Components.interfaces.nsIFilePicker;
+   var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+   fp.init(window, sTitle.replace("%1", extCount), nsIFilePicker.modeGetFolder);
+   fp.appendFilter("Cross Platform Installer", "*.xpi");
+   //fp.defaultString = extName.replace(new RegExp(" ", "g"), "-");
+   fp.defaultExtension = "xpi";
+   if (fp.show() === 1)
+    return false;
+   return fp.file.path;
+  }
+  function addFolderContentsToZip(zipW, folder, root)
+  {
+   var entries = folder.directoryEntries;
+   while(entries.hasMoreElements())
+   {
+    var entry = entries.getNext();
+    entry.QueryInterface(Components.interfaces.nsIFile);
+    zipW.addEntryFile(root + entry.leafName, 9, entry, false);
+    if (entry.isDirectory())
+     addFolderContentsToZip(zipW, entry, root + entry.leafName + "/");
+   }
+  }
+  function saveExt(fromPath, toPath)
+  {
+   var fFrom = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+   fFrom.initWithPath(fromPath);
+   if (!fFrom.exists())
+    return false;
+   if (fFrom.isDirectory())
+   {
+    var fTo = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+    fTo.initWithPath(toPath);
+    if (fTo.exists())
+     fTo.remove(false);
+    var zipWriter = Components.classes["@mozilla.org/zipwriter;1"].createInstance(Components.interfaces.nsIZipWriter);
+    zipWriter.open(fTo, 42);
+    addFolderContentsToZip(zipWriter, fFrom, "");
+    zipWriter.close();
+    return true;
+   }
+   else
+   {
+    var fTo = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+    fTo.initWithPath(toPath);
+    var fToDir  = fTo.parent;
+    var fToName = fTo.leafName;
+    if (fTo.exists())
+     fTo.remove(false);
+    fFrom.copyTo(fToDir, fToName);
+    return true;
+   }
+  }
+
+  var gBundle = Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService);
+  var locale = gBundle.createBundle("chrome://extexp/locale/extexp.properties");
+  var lclSave_Title = locale.GetStringFromName("save.all_title");
+  //var lclAlert_BadID = locale.GetStringFromName("alert.badid");
+  //var lclAlert_NoDefault = locale.GetStringFromName("alert.nodefault");
+  //var lclAlert_NoLocation = locale.GetStringFromName("alert.nolocation");
+  //var lclAlert_Failure = locale.GetStringFromName("alert.failure");
+  var lclAlert_None = locale.GetStringFromName("alert.all_none");
+  var lclAlert_Problem = locale.GetStringFromName("alert.all_problem");
+  var lclAlert_Failure = locale.GetStringFromName("alert.all_failure");
+  var lclAlert_Success = locale.GetStringFromName("alert.all_success");
+
+  var expList = [];
+  var listBox = document.getElementById("addon-list");
+  for (var i = 0; i < listBox.itemCount; i++)
+  {
+   var child = document.getElementById("addon-list").getItemAtIndex(i);
+   if (child.hasAttribute("name"))
+   {
+    var extName = child.getAttribute("name");
+    var extID = child.value;
+    if (extID === "{972ce4c6-7e08-4474-a285-3208198ce6fd}")
+     continue;
+    if (extID === "{00000000-0000-0000-0000-000000000000}")
+     continue;
+    var extPath = getExt(extID);
+    if (extPath === false)
+     continue;
+    var ext = {name: extName, id: extID, path: extPath};
+    expList.push(ext);
+   }
+  }
+  if (expList.length === 0)
+  {
+   alert(lclAlert_None);
+   return;
+  }
+  var savePath = getSave(expList.length, lclSave_Title);
+  if (savePath !== false)
+  {
+   var failList = [];
+   for (var e = 0; e < expList.length; e++)
+   {
+    if (saveExt(expList[e].path, OS.Path.join(savePath, expList[e].name.replace(new RegExp(" ", "g"), "-") + ".xpi")) === false)
+     failList.push(expList[e].name);
+   }
+   if (failList.length > 0)
+   {
+    var okCount = expList.length;
+    var badCount = failList.length;
+    okCount -= badCount;
+    if (okCount > 0)
+     alert(lclAlert_Problem.replace("%1", okCount).replace("%2", savePath).replace("%3", badCount));
+    else
+     alert(lclAlert_Failure.replace("%1", badCount).replace("%2", savePath));
+   }
+   else
+    alert(lclAlert_Success.replace("%1", expList.length).replace("%2", savePath));
+  }
  }
 };
 addEventListener("load", ExtExp.init, false);
