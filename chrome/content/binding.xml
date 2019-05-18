@@ -20,7 +20,7 @@
     <body><![CDATA[
  function getExt(extID)
  {
-  var profPath = Components.classes["@mozilla.org/file/directory_service;1"].getService( Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile).path;
+  var profPath = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile).path;
   var extFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
   extFile.initWithPath(profPath);
   extFile.appendRelativePath("extensions");
@@ -35,7 +35,7 @@
   if (extDir.exists() && extDir.isDirectory())
    return extDir.path;
 
-  var appPath = Components.classes["@mozilla.org/file/directory_service;1"].getService( Components.interfaces.nsIProperties).get("CurProcD", Components.interfaces.nsIFile).path;
+  var appPath = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("CurProcD", Components.interfaces.nsIFile).path;
   var appFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
   appFile.initWithPath(appPath);
   appFile.appendRelativePath("extensions");
@@ -159,7 +159,7 @@
   if (savePath !== false)
   {
    if (saveExt(extPath, savePath))
-    alert(extName + " has been exported to " + savePath + "!");
+    alert(lclAlert_Success.replace("%1", extName).replace("%2", savePath));
    else
     alert(lclAlert_Failure.replace("%1", extName).replace("%2", savePath));
   }
@@ -184,7 +184,7 @@
     <body><![CDATA[
  function getExt(extID)
  {
-  var profPath = Components.classes["@mozilla.org/file/directory_service;1"].getService( Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile).path;
+  var profPath = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile).path;
   var extFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
   extFile.initWithPath(profPath);
   extFile.appendRelativePath("extensions");
@@ -199,7 +199,7 @@
   if (extDir.exists() && extDir.isDirectory())
    return extDir.path;
 
-  var appPath = Components.classes["@mozilla.org/file/directory_service;1"].getService( Components.interfaces.nsIProperties).get("CurProcD", Components.interfaces.nsIFile).path;
+  var appPath = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("CurProcD", Components.interfaces.nsIFile).path;
   var appFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
   appFile.initWithPath(appPath);
   appFile.appendRelativePath("extensions");
@@ -309,7 +309,7 @@
   if (savePath !== false)
   {
    if (saveExt(extPath, savePath))
-    alert(extName + " has been exported to " + savePath + "!");
+    alert(lclAlert_Success.replace("%1", extName).replace("%2", savePath));
    else
     alert(lclAlert_Failure.replace("%1", extName).replace("%2", savePath));
   }
