@@ -51,6 +51,8 @@ var ExtExp =
    {
     var item = document.getElementById("addon-list").getItemAtIndex(i);
     var controlContainer = document.getAnonymousElementByAttribute(item, 'anonid', 'control-container');
+    if (controlContainer === null)
+     continue;
     existings = controlContainer.getElementsByTagName("extExpExportButton");
     if (item.getAttribute("type") === "extension" || (item.getAttribute("type") === "theme" && item.value !== "{972ce4c6-7e08-4474-a285-3208198ce6fd}"))
     {
@@ -114,6 +116,8 @@ var ExtExp =
    {
     var item = document.getElementById("addon-list").getItemAtIndex(i);
     var controlContainer = document.getAnonymousElementByAttribute(item, 'anonid', 'control-container');
+    if (controlContainer === null)
+     continue;
     var existings = controlContainer.getElementsByTagName("extExpExportButton");
     if (item.getAttribute("type") === "extension" || (item.getAttribute("type") === "theme" && item.value !== "{972ce4c6-7e08-4474-a285-3208198ce6fd}"))
     {
