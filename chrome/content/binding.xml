@@ -20,32 +20,32 @@
     <body><![CDATA[
  function getExt(extID)
  {
-  var profPath = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile).path;
-  var extFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+  var profPath = Components.classes['@mozilla.org/file/directory_service;1'].getService(Components.interfaces.nsIProperties).get('ProfD', Components.interfaces.nsIFile).path;
+  var extFile = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
   extFile.initWithPath(profPath);
-  extFile.appendRelativePath("extensions");
-  extFile.appendRelativePath(extID + ".xpi");
+  extFile.appendRelativePath('extensions");
+  extFile.appendRelativePath(extID + '.xpi');
   if (extFile.exists())
    return extFile.path;
 
-  var extDir = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+  var extDir = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
   extDir.initWithPath(profPath);
-  extDir.appendRelativePath("extensions");
+  extDir.appendRelativePath('extensions');
   extDir.appendRelativePath(extID);
   if (extDir.exists() && extDir.isDirectory())
    return extDir.path;
 
-  var appPath = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("CurProcD", Components.interfaces.nsIFile).path;
-  var appFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+  var appPath = Components.classes['@mozilla.org/file/directory_service;1'].getService(Components.interfaces.nsIProperties).get('CurProcD', Components.interfaces.nsIFile).path;
+  var appFile = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
   appFile.initWithPath(appPath);
-  appFile.appendRelativePath("extensions");
-  appFile.appendRelativePath(extID + ".xpi");
+  appFile.appendRelativePath('extensions');
+  appFile.appendRelativePath(extID + '.xpi');
   if (appFile.exists())
    return appFile.path;
 
-  var appDir = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+  var appDir = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
   appDir.initWithPath(appPath);
-  appDir.appendRelativePath("extensions");
+  appDir.appendRelativePath('extensions');
   appDir.appendRelativePath(extID);
   if (appDir.exists() && appDir.isDirectory())
    return appDir.path;
@@ -55,11 +55,11 @@
  function getSave(extName, extVer, sTitle)
  {
   var nsIFilePicker = Components.interfaces.nsIFilePicker;
-  var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-  fp.init(window, sTitle.replace("%1", extName), nsIFilePicker.modeSave);
-  fp.appendFilter("Cross Platform Installer", "*.xpi");
-  fp.defaultString = extName.replace(new RegExp(" ", "g"), "-") + "-v" + extVer;
-  fp.defaultExtension = "xpi";
+  var fp = Components.classes['@mozilla.org/filepicker;1'].createInstance(nsIFilePicker);
+  fp.init(window, sTitle.replace('%1', extName), nsIFilePicker.modeSave);
+  fp.appendFilter('Cross Platform Installer', '*.xpi');
+  fp.defaultString = extName.replace(new RegExp(' ', 'g'), '-') + '-v' + extVer;
+  fp.defaultExtension = 'xpi';
   if (fp.show() === 1)
    return false;
   return fp.file.path;
@@ -73,32 +73,32 @@
    entry.QueryInterface(Components.interfaces.nsIFile);
    zipW.addEntryFile(root + entry.leafName, 9, entry, false);
    if (entry.isDirectory())
-    addFolderContentsToZip(zipW, entry, root + entry.leafName + "/");
+    addFolderContentsToZip(zipW, entry, root + entry.leafName + '/');
   }
  }
  function saveExt(fromPath, toPath)
  {
-  var fFrom = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+  var fFrom = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
   fFrom.initWithPath(fromPath);
   if (!fFrom.exists())
    return false;
   if (fFrom.isDirectory())
   {
-   if (!("@mozilla.org/zipwriter;1" in Components.classes))
+   if (!('@mozilla.org/zipwriter;1' in Components.classes))
     return false;
-   var fTo = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-   fTo.initWithPath(toPath);
-   if (fTo.exists())
-    fTo.remove(false);
-   var zipWriter = Components.classes["@mozilla.org/zipwriter;1"].createInstance(Components.interfaces.nsIZipWriter);
-   zipWriter.open(fTo, 42);
-   addFolderContentsToZip(zipWriter, fFrom, "");
+   var dTo = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
+   dTo.initWithPath(toPath);
+   if (dTo.exists())
+    dTo.remove(false);
+   var zipWriter = Components.classes['@mozilla.org/zipwriter;1'].createInstance(Components.interfaces.nsIZipWriter);
+   zipWriter.open(dTo, 42);
+   addFolderContentsToZip(zipWriter, fFrom, '');
    zipWriter.close();
    return true;
   }
   else
   {
-   var fTo = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+   var fTo = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
    fTo.initWithPath(toPath);
    var fToDir  = fTo.parent;
    var fToName = fTo.leafName;
@@ -109,26 +109,26 @@
   }
  }
 
- var gBundle = Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService);
- var locale = gBundle.createBundle("chrome://extexp/locale/extexp.properties");
- var lclSave_Title = locale.GetStringFromName("save.title");
- var lclAlert_BadID = locale.GetStringFromName("alert.badid");
- var lclAlert_NoDefault = locale.GetStringFromName("alert.nodefault");
- var lclAlert_NoLocation = locale.GetStringFromName("alert.nolocation");
- var lclAlert_Failure = locale.GetStringFromName("alert.failure");
- var lclAlert_Success = locale.GetStringFromName("alert.success");
+ var gBundle = Components.classes['@mozilla.org/intl/stringbundle;1'].getService(Components.interfaces.nsIStringBundleService);
+ var locale = gBundle.createBundle('chrome://extexp/locale/extexp.properties');
+ var lclSave_Title = locale.GetStringFromName('save.title');
+ var lclAlert_BadID = locale.GetStringFromName('alert.badid');
+ var lclAlert_NoDefault = locale.GetStringFromName('alert.nodefault');
+ var lclAlert_NoLocation = locale.GetStringFromName('alert.nolocation');
+ var lclAlert_Failure = locale.GetStringFromName('alert.failure');
+ var lclAlert_Success = locale.GetStringFromName('alert.success');
 
- var extName = "Unknown";
- var extID   = "{00000000-0000-0000-0000-000000000000}";
- var extVer  = "0.0";
- if (this.parentNode.getAttribute("id") === "detail-controls")
+ var extName = 'Unknown';
+ var extID   = '{00000000-0000-0000-0000-000000000000}';
+ var extVer  = '0.0';
+ if (this.parentNode.getAttribute('id') === 'detail-controls')
  {
-  extName = document.getElementById("detail-name").innerHTML;
-  var listBox = document.getElementById("addon-list");
+  extName = document.getElementById('detail-name').innerHTML;
+  var listBox = document.getElementById('addon-list');
   for (var i = 0; i < listBox.itemCount; i++)
   {
-   var child = document.getElementById("addon-list").getItemAtIndex(i);
-   if (child.getAttribute("name") === extName)
+   var child = document.getElementById('addon-list').getItemAtIndex(i);
+   if (child.getAttribute('name') === extName)
    {
     extID = child.value;
     break;
@@ -137,16 +137,16 @@
  }
  else
  {
-  extName = this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("name");
+  extName = this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute('name');
   extID   = this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.value;
-  extVer  = this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode._version.getAttribute("value");
+  extVer  = this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode._version.getAttribute('value');
  }
- if (extID === "{00000000-0000-0000-0000-000000000000}")
+ if (extID === '{00000000-0000-0000-0000-000000000000}')
  {
   alert(lclAlert_BadID);
   return;
  }
- if (extID === "{972ce4c6-7e08-4474-a285-3208198ce6fd}")
+ if (extID === '{972ce4c6-7e08-4474-a285-3208198ce6fd}')
  {
   alert(lclAlert_NoDefault);
   return;
@@ -154,7 +154,7 @@
  var extPath = getExt(extID);
  if (extPath === false)
  {
-  alert(lclAlert_NoLocation.replace("%1", extName) + "\n\n" + extID);
+  alert(lclAlert_NoLocation.replace('%1', extName) + '\n\n' + extID);
   return;
  }
  else
@@ -163,9 +163,9 @@
   if (savePath !== false)
   {
    if (saveExt(extPath, savePath))
-    alert(lclAlert_Success.replace("%1", extName).replace("%2", savePath));
+    alert(lclAlert_Success.replace('%1', extName).replace('%2', savePath));
    else
-    alert(lclAlert_Failure.replace("%1", extName).replace("%2", savePath));
+    alert(lclAlert_Failure.replace('%1', extName).replace('%2', savePath));
   }
  }
     ]]></body>
@@ -188,32 +188,32 @@
     <body><![CDATA[
  function getExt(extID)
  {
-  var profPath = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile).path;
-  var extFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+  var profPath = Components.classes['@mozilla.org/file/directory_service;1'].getService(Components.interfaces.nsIProperties).get('ProfD', Components.interfaces.nsIFile).path;
+  var extFile = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
   extFile.initWithPath(profPath);
-  extFile.appendRelativePath("extensions");
-  extFile.appendRelativePath(extID + ".xpi");
+  extFile.appendRelativePath('extensions');
+  extFile.appendRelativePath(extID + '.xpi');
   if (extFile.exists())
    return extFile.path;
 
-  var extDir = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+  var extDir = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
   extDir.initWithPath(profPath);
-  extDir.appendRelativePath("extensions");
+  extDir.appendRelativePath('extensions');
   extDir.appendRelativePath(extID);
   if (extDir.exists() && extDir.isDirectory())
    return extDir.path;
 
-  var appPath = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("CurProcD", Components.interfaces.nsIFile).path;
-  var appFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+  var appPath = Components.classes['@mozilla.org/file/directory_service;1'].getService(Components.interfaces.nsIProperties).get('CurProcD', Components.interfaces.nsIFile).path;
+  var appFile = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
   appFile.initWithPath(appPath);
-  appFile.appendRelativePath("extensions");
-  appFile.appendRelativePath(extID + ".xpi");
+  appFile.appendRelativePath('extensions');
+  appFile.appendRelativePath(extID + '.xpi');
   if (appFile.exists())
    return appFile.path;
 
-  var appDir = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+  var appDir = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
   appDir.initWithPath(appPath);
-  appDir.appendRelativePath("extensions");
+  appDir.appendRelativePath('extensions');
   appDir.appendRelativePath(extID);
   if (appDir.exists() && appDir.isDirectory())
    return appDir.path;
@@ -223,11 +223,11 @@
  function getSave(extName, extVer, sTitle)
  {
   var nsIFilePicker = Components.interfaces.nsIFilePicker;
-  var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-  fp.init(window, sTitle.replace("%1", extName), nsIFilePicker.modeSave);
-  fp.appendFilter("Cross Platform Installer", "*.xpi");
-  fp.defaultString = extName.replace(new RegExp(" ", "g"), "-") + "-v" + extVer;
-  fp.defaultExtension = "xpi";
+  var fp = Components.classes['@mozilla.org/filepicker;1'].createInstance(nsIFilePicker);
+  fp.init(window, sTitle.replace('%1', extName), nsIFilePicker.modeSave);
+  fp.appendFilter('Cross Platform Installer', '*.xpi');
+  fp.defaultString = extName.replace(new RegExp(' ', 'g'), '-') + '-v' + extVer;
+  fp.defaultExtension = 'xpi';
   if (fp.show() === 1)
    return false;
   return fp.file.path;
@@ -241,32 +241,32 @@
    entry.QueryInterface(Components.interfaces.nsIFile);
    zipW.addEntryFile(root + entry.leafName, 9, entry, false);
    if (entry.isDirectory())
-    addFolderContentsToZip(zipW, entry, root + entry.leafName + "/");
+    addFolderContentsToZip(zipW, entry, root + entry.leafName + '/');
   }
  }
  function saveExt(fromPath, toPath)
  {
-  var fFrom = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+  var fFrom = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
   fFrom.initWithPath(fromPath);
   if (!fFrom.exists())
    return false;
   if (fFrom.isDirectory())
   {
-   if (!("@mozilla.org/zipwriter;1" in Components.classes))
+   if (!('@mozilla.org/zipwriter;1' in Components.classes))
     return false;
-   var fTo = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-   fTo.initWithPath(toPath);
-   if (fTo.exists())
-    fTo.remove(false);
-   var zipWriter = Components.classes["@mozilla.org/zipwriter;1"].createInstance(Components.interfaces.nsIZipWriter);
-   zipWriter.open(fTo, 42);
-   addFolderContentsToZip(zipWriter, fFrom, "");
+   var dTo = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
+   dTo.initWithPath(toPath);
+   if (dTo.exists())
+    dTo.remove(false);
+   var zipWriter = Components.classes['@mozilla.org/zipwriter;1'].createInstance(Components.interfaces.nsIZipWriter);
+   zipWriter.open(dTo, 42);
+   addFolderContentsToZip(zipWriter, fFrom, '');
    zipWriter.close();
    return true;
   }
   else
   {
-   var fTo = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+   var fTo = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
    fTo.initWithPath(toPath);
    var fToDir  = fTo.parent;
    var fToName = fTo.leafName;
@@ -277,30 +277,30 @@
   }
  }
 
- var gBundle = Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService);
- var locale = gBundle.createBundle("chrome://extexp/locale/extexp.properties");
- var lclSave_Title = locale.GetStringFromName("save.title");
- var lclAlert_BadID = locale.GetStringFromName("alert.badid");
- var lclAlert_NoDefault = locale.GetStringFromName("alert.nodefault");
- var lclAlert_NoLocation = locale.GetStringFromName("alert.nolocation");
- var lclAlert_Failure = locale.GetStringFromName("alert.failure");
- var lclAlert_Success = locale.GetStringFromName("alert.success");
+ var gBundle = Components.classes['@mozilla.org/intl/stringbundle;1'].getService(Components.interfaces.nsIStringBundleService);
+ var locale = gBundle.createBundle('chrome://extexp/locale/extexp.properties');
+ var lclSave_Title = locale.GetStringFromName('save.title');
+ var lclAlert_BadID = locale.GetStringFromName('alert.badid');
+ var lclAlert_NoDefault = locale.GetStringFromName('alert.nodefault');
+ var lclAlert_NoLocation = locale.GetStringFromName('alert.nolocation');
+ var lclAlert_Failure = locale.GetStringFromName('alert.failure');
+ var lclAlert_Success = locale.GetStringFromName('alert.success');
 
- var extName = "Unknown";
- var extID   = "{00000000-0000-0000-0000-000000000000}";
- var extVer  = "0.0";
- if (this.parentNode.parentNode.parentNode.parentNode.tagName === "richlistitem")
+ var extName = 'Unknown';
+ var extID   = '{00000000-0000-0000-0000-000000000000}';
+ var extVer  = '0.0';
+ if (this.parentNode.parentNode.parentNode.parentNode.tagName === 'richlistitem')
  {
-  extName = this.parentNode.parentNode.parentNode.parentNode.getAttribute("name");
-  extID   = this.parentNode.parentNode.parentNode.parentNode.getAttribute("addonID");
-  extVer  = this.parentNode.parentNode.parentNode.parentNode.getAttribute("version");
+  extName = this.parentNode.parentNode.parentNode.parentNode.getAttribute('name');
+  extID   = this.parentNode.parentNode.parentNode.parentNode.getAttribute('addonID');
+  extVer  = this.parentNode.parentNode.parentNode.parentNode.getAttribute('version');
  }
- if (extID === "{00000000-0000-0000-0000-000000000000}")
+ if (extID === '{00000000-0000-0000-0000-000000000000}')
  {
   alert(lclAlert_BadID);
   return;
  }
- if (extID === "{972ce4c6-7e08-4474-a285-3208198ce6fd}")
+ if (extID === '{972ce4c6-7e08-4474-a285-3208198ce6fd}')
  {
   alert(lclAlert_NoDefault);
   return;
@@ -308,7 +308,7 @@
  var extPath = getExt(extID);
  if (extPath === false)
  {
-  alert(lclAlert_NoLocation.replace("%1", extName) + "\n\n" + extID);
+  alert(lclAlert_NoLocation.replace('%1', extName) + '\n\n' + extID);
   return;
  }
  else
@@ -317,9 +317,9 @@
   if (savePath !== false)
   {
    if (saveExt(extPath, savePath))
-    alert(lclAlert_Success.replace("%1", extName).replace("%2", savePath));
+    alert(lclAlert_Success.replace('%1', extName).replace('%2', savePath));
    else
-    alert(lclAlert_Failure.replace("%1", extName).replace("%2", savePath));
+    alert(lclAlert_Failure.replace('%1', extName).replace('%2', savePath));
   }
  }
     ]]></body>
