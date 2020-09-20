@@ -23,7 +23,7 @@
   var profPath = Components.classes['@mozilla.org/file/directory_service;1'].getService(Components.interfaces.nsIProperties).get('ProfD', Components.interfaces.nsIFile).path;
   var extFile = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
   extFile.initWithPath(profPath);
-  extFile.appendRelativePath('extensions");
+  extFile.appendRelativePath('extensions');
   extFile.appendRelativePath(extID + '.xpi');
   if (extFile.exists())
    return extFile.path;
