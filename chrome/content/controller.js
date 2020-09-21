@@ -292,7 +292,7 @@ var ExtExp =
     if (extPath === false)
      continue;
     var extVer = '0.0';
-    if (child._version !== undefined && child._version.hasAttribute('value'))
+    if (typeof child._version !== 'undefined' && child._version !== null && child._version.hasAttribute('value'))
      extVer = child._version.getAttribute('value');
     var ext = {name: extName, version: extVer, id: extID, path: extPath};
     expList.push(ext);
