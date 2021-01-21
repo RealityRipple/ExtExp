@@ -3,7 +3,7 @@
  <Description about="urn:mozilla:install-manifest">
   <em:name>ExtExp</em:name>
   <em:id>{A1B40EBE-CFA1-5353-8C69-9B76E30B8788}</em:id>
-  <em:version>2.0</em:version>
+  <em:version>2.1</em:version>
   <em:type>2</em:type>
   <!-- Firefox -->
   <em:targetApplication>
