@@ -309,7 +309,9 @@ var ExtExp =
    var failList = [];
    for (var e = 0; e < expList.length; e++)
    {
-    var saveName = OS.Path.join(savePath, expList[e].name.replace(new RegExp(' ', 'g'), '-') + '-v' + expList[e].version + '.xpi');
+    var saveName = expList[e].name.replace(new RegExp(' ', 'g'), '-') + '-v' + expList[e].version + '.xpi';
+    saveName = saveName.replace(/[/\\?%*:|"<>]/g, '-');
+    saveName = OS.Path.join(savePath, saveName);
     if (saveExt(expList[e].path, saveName) === false)
      failList.push(expList[e].name);
    }
