@@ -206,6 +206,38 @@ var ExtExp =
    if (appDir.exists() && appDir.isDirectory())
     return appDir.path;
 
+   var extStagedFile = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
+   extStagedFile.initWithPath(profPath);
+   extStagedFile.appendRelativePath('extensions');
+   extStagedFile.appendRelativePath('staged');
+   extStagedFile.appendRelativePath(extID + '.xpi');
+   if (extStagedFile.exists())
+    return extStagedFile.path;
+
+   var extStagedDir = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
+   extStagedDir.initWithPath(profPath);
+   extStagedDir.appendRelativePath('extensions');
+   extStagedDir.appendRelativePath('staged');
+   extStagedDir.appendRelativePath(extID);
+   if (extStagedDir.exists() && extStagedDir.isDirectory())
+    return extStagedDir.path;
+
+   var appStagedFile = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
+   appStagedFile.initWithPath(appPath);
+   appStagedFile.appendRelativePath('extensions');
+   appStagedFile.appendRelativePath('staged');
+   appStagedFile.appendRelativePath(extID + '.xpi');
+   if (appStagedFile.exists())
+    return appStagedFile.path;
+
+   var appStagedDir = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
+   appStagedDir.initWithPath(appPath);
+   appStagedDir.appendRelativePath('extensions');
+   appStagedDir.appendRelativePath('staged');
+   appStagedDir.appendRelativePath(extID);
+   if (appStagedDir.exists() && appStagedDir.isDirectory())
+    return appStagedDir.path;
+
    return false;
   }
   function getSave(extCount, sTitle)
