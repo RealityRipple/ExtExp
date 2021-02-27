@@ -169,6 +169,12 @@
    }
   }
  }
+ else if (this.parentNode.parentNode.parentNode.parentNode.tagName.toLowerCase() === 'richlistitem')
+ {
+  extName = this.parentNode.parentNode.parentNode.parentNode.getAttribute('name');
+  extID   = this.parentNode.parentNode.parentNode.parentNode.value;
+  extVer  = this.parentNode.parentNode.parentNode.parentNode.mAddon.version;
+ }
  else
  {
   extName = this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute('name');

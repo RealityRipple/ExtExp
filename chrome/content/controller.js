@@ -45,7 +45,14 @@ var ExtExp =
  {
   var existings;
   var cb;
-  if (document.getElementById('view-port').selectedPanel.id == 'list-view')
+  var viewBox = null;
+  if (document.getElementById('headered-views-content') !== null)
+   viewBox = document.getElementById('headered-views-content');
+  else if (document.getElementById('view-port') !== null)
+   viewBox = document.getElementById('view-port');
+  if (viewBox === null)
+   return;
+  if (viewBox.selectedPanel.id == 'list-view')
   {
    for (var i=0; i < document.getElementById('addon-list').itemCount; i++)
    {
@@ -77,7 +84,7 @@ var ExtExp =
    }
    document.getElementById('addon-list').addEventListener('select', ExtExp.newButton, false);
   }
-  else if (document.getElementById('view-port').selectedPanel.id == 'detail-view')
+  else if (viewBox.selectedPanel.id == 'detail-view')
   {
    var detail = document.getElementById('detail-view');
    existings = detail.getElementsByTagName('extExpExportButton');
@@ -110,7 +117,14 @@ var ExtExp =
  },
  newButton: function()
  {
-  if (document.getElementById('view-port').selectedPanel.id == 'list-view')
+  var viewBox = null;
+  if (document.getElementById('headered-views-content') !== null)
+   viewBox = document.getElementById('headered-views-content');
+  else if (document.getElementById('view-port') !== null)
+   viewBox = document.getElementById('view-port');
+  if (viewBox === null)
+   return;
+  if (viewBox.selectedPanel.id == 'list-view')
   {
    for (var i = 0; i < document.getElementById('addon-list').itemCount; i++)
    {
@@ -326,6 +340,8 @@ var ExtExp =
     var extVer = '0.0';
     if (typeof child._version !== 'undefined' && child._version !== null && child._version.hasAttribute('value'))
      extVer = child._version.getAttribute('value');
+    if (typeof child.mAddon !== undefined && child.mAddon.version !== null)
+     extVer = child.mAddon.version;
     var ext = {name: extName, version: extVer, id: extID, path: extPath};
     expList.push(ext);
    }

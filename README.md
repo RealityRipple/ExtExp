@@ -4,7 +4,7 @@ Export your extensions!
 #### Supports
  * Pale Moon [25.0a1pre - 29.*]
  * Firefox [3.0 - 50.*]
- * SeaMonkey [2.0a1 - 2.40]
+ * SeaMonkey [2.0a1 - 2.*]
  * Thunderbird [2.0 - 52.*]
  * Sunbird [1.0b1 - 5.0b2pre]
 
