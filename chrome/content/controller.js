@@ -3,43 +3,13 @@ var ExtExp =
  _timer: Components.classes['@mozilla.org/timer;1'].createInstance(Components.interfaces.nsITimer),
  init: function()
  {
-  if (ExtExp._isLegacyEM())
-  {
-   ExtExp._showLegacyButton();
-   document.getElementById('extensionsView').addEventListener('select', ExtExp.wait, false);
-  }
-  else
-  {
-   document.addEventListener('ViewChanged', ExtExp.showButton, true);
-   ExtExp.showButton();
-  }
- },
- wait: function()
- {
-  ExtExp._showLegacyButton();
-  ExtExp._timer.initWithCallback(ExtExp.event, 1, Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);
- },
- event: 
- {
-  notify: function(_timer)
-  {
-   ExtExp._showLegacyButton();
-  }
+  document.addEventListener('ViewChanged', ExtExp.showButton, true);
+  ExtExp.showButton();
  },
  createButton: function()
  {
   var button = document.createElement('extExpExportButton');
   return button;
- },
- _createLegacyButton: function()
- {
-  var button = document.createElement('extExpLegacyExportButton');
-  return button;
- },
- _isLegacyEM: function()
- {
-  // Firefox 3.6 and below
-  return document.getElementById('extensionsView');
  },
  showButton: function()
  {
@@ -154,35 +124,6 @@ var ExtExp =
       existings[0].style.display = 'none';
      }
     }
-   }
-  }
- },
- _showLegacyButton: function()
- {
-  if(document.getElementById('exportButtonOn'))
-  {
-   ExtExp._timer.cancel();
-   return;
-  }
-  if (ExtExp.exportButton && ExtExp.exportButton.parentNode)
-  {
-   ExtExp.exportButton.parentNode.removeChild(ExtExp.exportButton);
-  }
-  var elemExtension = document.getElementById('extensionsView').selectedItem;
-  if (!elemExtension)
-   return;
-  var elemSelectedButtons = document.getAnonymousElementByAttribute(elemExtension, 'anonid', 'selectedButtons');
-  if (!elemSelectedButtons)
-   return;
-  if (!ExtExp.exportButton)
-   ExtExp.exportButton = ExtExp._createLegacyButton();
-  for (var i=0; i<elemSelectedButtons.childNodes.length; i++)
-  {
-   if (elemSelectedButtons.childNodes[i] && elemSelectedButtons.childNodes[i].nodeType == Node.ELEMENT_NODE && elemSelectedButtons.childNodes[i].getAttribute('class').match(/optionsButton/))
-   {
-    ExtExp.exportButton.id='exportButtonOn';
-    elemSelectedButtons.insertBefore(ExtExp.exportButton, elemSelectedButtons.childNodes[i]);
-    break;
    }
   }
  },
