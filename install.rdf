@@ -3,13 +3,13 @@
  <Description about="urn:mozilla:install-manifest">
   <em:name>ExtExp</em:name>
   <em:id>{A1B40EBE-CFA1-5353-8C69-9B76E30B8788}</em:id>
-  <em:version>31.0</em:version>
+  <em:version>32.0</em:version>
   <em:type>2</em:type>
   <em:targetApplication>
    <Description>
     <em:id>{8de7fcbb-c55c-4fbe-bfc5-fc555c87dbc4}</em:id>
-    <em:minVersion>31.0</em:minVersion>
-    <em:maxVersion>31.*</em:maxVersion>
+    <em:minVersion>32.0</em:minVersion>
+    <em:maxVersion>32.*</em:maxVersion>
    </Description>
   </em:targetApplication>
   <em:description>Export your extensions!</em:description>
